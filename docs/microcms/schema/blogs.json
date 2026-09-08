@@ -1,0 +1,59 @@
+{
+  "apiFields": [
+    {
+      "idValue": "blg0title01",
+      "fieldId": "title",
+      "name": "タイトル",
+      "kind": "text",
+      "required": true
+    },
+    {
+      "idValue": "blg0content",
+      "fieldId": "content",
+      "name": "本文",
+      "kind": "richEditorV2",
+      "required": true
+    },
+    {
+      "idValue": "blg0eyecat1",
+      "fieldId": "eyecatch",
+      "name": "アイキャッチ",
+      "kind": "media",
+      "required": false
+    },
+    {
+      "idValue": "blg0origpub",
+      "fieldId": "originalPublishedAt",
+      "name": "元の公開日",
+      "kind": "date",
+      "required": true
+    },
+    {
+      "idValue": "blg0descrip",
+      "fieldId": "description",
+      "name": "メタ説明",
+      "kind": "textArea",
+      "required": false
+    },
+    {
+      "idValue": "blg0type001",
+      "fieldId": "type",
+      "name": "種別",
+      "kind": "select",
+      "required": false,
+      "multipleSelect": false,
+      "selectItems": [
+        { "id": "typearticl", "value": "記事" },
+        { "id": "typediary0", "value": "日報" }
+      ]
+    },
+    {
+      "idValue": "blg0featur1",
+      "fieldId": "featured",
+      "name": "注目記事",
+      "kind": "boolean",
+      "required": false
+    }
+  ],
+  "customFields": []
+}

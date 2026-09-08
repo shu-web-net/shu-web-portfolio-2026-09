@@ -1,0 +1,74 @@
+{
+  "apiFields": [
+    {
+      "idValue": "wrk0title01",
+      "fieldId": "title",
+      "name": "タイトル",
+      "kind": "text",
+      "required": true
+    },
+    {
+      "idValue": "wrk0thumbn1",
+      "fieldId": "thumbnail",
+      "name": "サムネイル",
+      "kind": "media",
+      "required": false
+    },
+    {
+      "idValue": "wrk0overvw1",
+      "fieldId": "overview",
+      "name": "概要",
+      "kind": "textArea",
+      "required": true
+    },
+    {
+      "idValue": "wrk0role001",
+      "fieldId": "role",
+      "name": "担当範囲",
+      "kind": "textArea",
+      "required": false
+    },
+    {
+      "idValue": "wrk0techst1",
+      "fieldId": "techStack",
+      "name": "使用技術",
+      "kind": "select",
+      "required": false,
+      "multipleSelect": true,
+      "selectItems": [
+        { "id": "htmltech00", "value": "HTML" },
+        { "id": "csstech000", "value": "CSS" },
+        { "id": "sasstech00", "value": "Sass" },
+        { "id": "jstech0000", "value": "JavaScript" },
+        { "id": "tstech0000", "value": "TypeScript" },
+        { "id": "jquerytech", "value": "jQuery" },
+        { "id": "reacttech0", "value": "React" },
+        { "id": "nextjstech", "value": "Next.js" },
+        { "id": "vuetech000", "value": "Vue.js" },
+        { "id": "astrotech0", "value": "Astro" },
+        { "id": "tailwindtc", "value": "Tailwind CSS" },
+        { "id": "gsaptech00", "value": "GSAP" },
+        { "id": "wptech0000", "value": "WordPress" },
+        { "id": "phptech000", "value": "PHP" },
+        { "id": "mcmstech00", "value": "microCMS" },
+        { "id": "ghatech000", "value": "GitHub Actions" },
+        { "id": "figmatech0", "value": "Figma" }
+      ]
+    },
+    {
+      "idValue": "wrk0url0001",
+      "fieldId": "url",
+      "name": "参考URL",
+      "kind": "text",
+      "required": false
+    },
+    {
+      "idValue": "wrk0order01",
+      "fieldId": "order",
+      "name": "表示順",
+      "kind": "number",
+      "required": false
+    }
+  ],
+  "customFields": []
+}

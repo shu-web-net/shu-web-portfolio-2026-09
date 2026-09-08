@@ -1,0 +1,26 @@
+{
+  "apiFields": [
+    {
+      "idValue": "prf0catch01",
+      "fieldId": "catchcopy",
+      "name": "キャッチコピー",
+      "kind": "text",
+      "required": false
+    },
+    {
+      "idValue": "prf0intro01",
+      "fieldId": "introduction",
+      "name": "自己紹介",
+      "kind": "richEditorV2",
+      "required": false
+    },
+    {
+      "idValue": "prf0skills1",
+      "fieldId": "skills",
+      "name": "スキル",
+      "kind": "richEditorV2",
+      "required": false
+    }
+  ],
+  "customFields": []
+}

@@ -1,0 +1,14 @@
+{
+  "name": "shu-web-migration",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "WordPress(shu-web.jp) → microCMS blogs 記事移行スクリプト",
+  "scripts": {
+    "dry": "node migrate.mjs --dry --limit=5",
+    "migrate": "node migrate.mjs"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  }
+}

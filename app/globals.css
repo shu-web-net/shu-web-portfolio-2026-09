@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== デザイントークン（テーマの実体。Tailwindのカラーはこれを参照） ===== */
+:root {
+  --sans: -apple-system, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --bg:#fbfcfc; --surface:#f2f6f5; --ink:#141a1f; --muted:#586570; --line:#e4e9ea;
+  --accent:#0c8f80; --accent-ink:#0a7568; --chip-bg:#eaf3f1; --chip-line:#d6e6e2;
+  --shadow:0 18px 42px -26px rgba(15,45,40,.42); --nda-bg:#10312b; --nda-ink:#dff0ea;
+  --grid-line: 20,32,29; --grid-op:.045; --glow-op:.10; --accent-rgb: 12,143,128;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0e1217; --surface:#151b22; --ink:#e8eef3; --muted:#8b97a4; --line:#242c36;
+    --accent:#2fd4c0; --accent-ink:#57e2d1; --chip-bg:#12302b; --chip-line:#1f4a43;
+    --shadow:0 18px 42px -24px rgba(0,0,0,.6); --nda-bg:#0b241f; --nda-ink:#d9efe8;
+    --grid-line: 255,255,255; --grid-op:.05; --glow-op:.16; --accent-rgb: 47,212,192; }
+}
+:root[data-theme="light"]{ --bg:#fbfcfc; --surface:#f2f6f5; --ink:#141a1f; --muted:#586570; --line:#e4e9ea; --accent:#0c8f80; --accent-ink:#0a7568; --chip-bg:#eaf3f1; --chip-line:#d6e6e2; --shadow:0 18px 42px -26px rgba(15,45,40,.42); --nda-bg:#10312b; --nda-ink:#dff0ea; --grid-line: 20,32,29; --grid-op:.045; --glow-op:.10; --accent-rgb: 12,143,128; }
+:root[data-theme="dark"]{ --bg:#0e1217; --surface:#151b22; --ink:#e8eef3; --muted:#8b97a4; --line:#242c36; --accent:#2fd4c0; --accent-ink:#57e2d1; --chip-bg:#12302b; --chip-line:#1f4a43; --shadow:0 18px 42px -24px rgba(0,0,0,.6); --nda-bg:#0b241f; --nda-ink:#d9efe8; --grid-line: 255,255,255; --grid-op:.05; --glow-op:.16; --accent-rgb: 47,212,192; }
+
+@layer base {
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  body { @apply bg-page text-ink font-sans antialiased; line-height: 1.7; transition: background .3s, color .3s; }
+  a { color: inherit; text-decoration: none; }
+  /* 背後に薄い格子柄＋アクセントのグロー（ライト/ダーク両方。濃さはテーマ変数で調整） */
+  body::before{
+    content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:
+      radial-gradient(60% 42% at 50% 0%, rgba(var(--accent-rgb), var(--glow-op)), transparent 70%),
+      linear-gradient(rgba(var(--grid-line),var(--grid-op)) 1px,transparent 1px),
+      linear-gradient(90deg, rgba(var(--grid-line),var(--grid-op)) 1px,transparent 1px);
+    background-size: 100% 100%, 46px 46px, 46px 46px;
+    transition: opacity .3s;
+    -webkit-mask-image:radial-gradient(120% 80% at 50% 0%, #000 55%, transparent 100%);
+    mask-image:radial-gradient(120% 80% at 50% 0%, #000 55%, transparent 100%);
+  }
+}
+
+/* ===== 再利用するコンポーネント原子（Tailwindユーティリティを@applyで合成） ===== */
+@layer components {
+  .btn { @apply inline-block rounded-lg px-[26px] py-[13px] text-[15px] font-semibold border border-transparent transition; }
+  .btn-primary { @apply btn bg-accent; color:#04231f; }
+  .btn-primary:hover { @apply -translate-y-0.5; box-shadow:0 12px 26px -12px var(--accent); }
+  .btn-ghost { @apply btn border-line text-ink; }
+  .btn-ghost:hover { @apply border-accent text-accentink; }
+
+  .chip { @apply font-mono text-[11px] text-accentink bg-chip border border-chipline rounded-[5px] px-2 py-[3px]; }
+
+  .kicker { @apply font-mono text-[12px] tracking-[.08em] text-accentink uppercase; }
+
+  .card { @apply relative block overflow-hidden rounded-xl border border-line bg-surface p-5 transition; }
+  .card::after { content:""; @apply absolute left-0 top-0 h-0.5 w-0 bg-accent; transition:width .35s; }
+  .card:hover { @apply -translate-y-[3px] shadow-card; border-color:color-mix(in srgb,var(--accent) 30%, var(--line)); }
+  .card:hover::after { @apply w-full; }
+  .card-nda { @apply bg-nda border-transparent; }
+  .card-nda h3 { @apply text-ndaink; }
+  .card-nda p { @apply text-ndaink opacity-80; }
+  .card-nda .chip { background:rgba(255,255,255,.07); border-color:rgba(255,255,255,.14); color:#bfe0d8; }
+
+  .badge { @apply inline-flex items-center gap-[7px] font-mono text-[12px] font-bold bg-accent rounded-[7px] px-3 py-1.5 mb-3.5; color:#04231f; }
+
+  .thumb { @apply mb-[15px] aspect-[16/9] rounded-lg border border-line bg-cover bg-center; background-image:linear-gradient(120deg,color-mix(in srgb,var(--accent) 12%,var(--surface)),var(--surface)); }
+
+  .tag { @apply font-mono text-[11px] font-bold rounded-[5px] px-2 py-[3px] whitespace-nowrap text-accentink bg-chip border border-chipline; }
+  .tag-diary { background:color-mix(in srgb,var(--muted) 14%, transparent); @apply text-muted border-transparent; }
+
+  /* skill set 下段（CMS由来HTMLのフォールバック整形にも使用） */
+  .skills-doc { @apply rounded-xl border border-line bg-surface px-[22px] pt-1.5 pb-3.5; }
+  .skills-doc h3 { @apply font-mono text-[12px] tracking-[.04em] text-accentink font-semibold mt-4 mb-1.5 pt-4 border-t border-line; }
+  .skills-doc h3:first-child { @apply border-t-0 pt-2 mt-2; }
+  .skills-doc ul { @apply list-none m-0 p-0; }
+  .skills-doc li { @apply py-2 text-[13.5px] leading-[1.7] border-b border-dashed border-line; }
+  .skills-doc ul li:last-child { @apply border-b-0; }
+  .skills-doc .sk-name { @apply font-bold text-ink; }
+  .skills-doc .sk-use { @apply text-muted; }
+  .skills-doc .sk-use::before { content:"— "; @apply text-muted opacity-60; }
+
+  /* profile 自己紹介（CMSのintroduction HTML）用 */
+  .bio p { @apply text-[15px] leading-[1.95] text-muted mb-3.5 max-w-[34em]; }
+  .bio p:last-child { @apply mb-0; }
+}
+
+/* ===== スクロール登場アニメ（JSのIntersectionObserverでinを付与） ===== */
+.reveal{ opacity:0; transform:translateY(16px); transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1); }
+.reveal.in{ opacity:1; transform:none; }
+.d1{ transition-delay:.07s; } .d2{ transition-delay:.14s; } .d3{ transition-delay:.21s; } .d4{ transition-delay:.28s; }
+@media(prefers-reduced-motion:reduce){ .reveal{ opacity:1!important; transform:none!important; transition:none!important; } html{ scroll-behavior:auto; } }
