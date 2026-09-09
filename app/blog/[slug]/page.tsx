@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { getBlogDetail, blogThumbnail } from '@/lib/microcms';
+import { transformEmbeds } from '@/lib/embeds';
 import { getAllBlogIds } from '../shared';
+import EmbedScripts from '@/components/EmbedScripts';
 
 export async function generateStaticParams() {
   const ids = await getAllBlogIds();
@@ -22,6 +24,7 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
   const post = await getBlogDetail(params.slug);
   const thumb = blogThumbnail(post);
   const typeLabel = post.type?.[0] ?? '記事';
+  const contentHtml = transformEmbeds(post.content);
 
   return (
     <main className="mx-auto max-w-wrap px-6">
@@ -46,9 +49,10 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
 
         <div
           className="prose dark:prose-invert prose-a:text-accentink prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg prose-blockquote:border-accent mt-10 max-w-none"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ __html: contentHtml }}
         />
       </article>
+      <EmbedScripts />
     </main>
   );
 }

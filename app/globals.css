@@ -83,6 +83,11 @@
   .bio p:last-child { @apply mb-0; }
 }
 
+/* 記事本文の埋め込み（lib/embeds.ts が生成するHTML向け。Tailwindのcontent glob対象外のため素のCSSで定義） */
+.embed-youtube{ position:relative; aspect-ratio:16/9; margin:1.75em 0; border-radius:.75rem; overflow:hidden; border:1px solid var(--line); }
+.embed-youtube iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+blockquote.twitter-tweet, blockquote.instagram-media{ margin:1.75em auto !important; max-width:550px; }
+
 /* ===== スクロール登場アニメ（JSのIntersectionObserverでinを付与） ===== */
 .reveal{ opacity:0; transform:translateY(16px); transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1); }
 .reveal.in{ opacity:1; transform:none; }
