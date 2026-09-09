@@ -12,7 +12,9 @@ if (!serviceDomain || !apiKey) {
   throw new Error('MICROCMS_SERVICE_DOMAIN / MICROCMS_API_KEY が設定されていません（.env.local を確認）');
 }
 
-export const client = createClient({ serviceDomain, apiKey });
+// retry: 220記事分の静的生成を並行実行するとmicroCMS(Hobbyプラン)のレート制限(429)に
+// 引っかかることがあるため、SDK標準のリトライを有効化して吸収する。
+export const client = createClient({ serviceDomain, apiKey, retry: true });
 
 // 開発時のみ no-store で常に最新を取得（fetchキャッシュで古い内容が固定されるのを防ぐ）。
 // 本番の静的エクスポート(next build)では no-store は動的扱いになりexportが失敗するため付けない

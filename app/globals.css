@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 /* ===== デザイントークン（テーマの実体。Tailwindのカラーはこれを参照） ===== */
+/* 既定値はライト。OS設定（prefers-color-scheme）に追従し、ユーザーが手動で切り替えたら data-theme 属性が優先される */
 :root {
   --sans: -apple-system, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
