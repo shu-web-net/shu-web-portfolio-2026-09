@@ -126,7 +126,7 @@ export default async function Home() {
           <BlkHead title="latest posts" href="/blog/" />
           <div className="flex flex-col">
             {blogs.contents.map((b, i) => (
-              <a key={b.id} href={`/blog/${b.id}/`} className={`reveal ${D[i] ?? ''} group flex items-baseline gap-3.5 border-b border-line py-[15px] transition-[padding] duration-200 ease-out hover:pl-2.5`}>
+              <a key={b.id} href={`/blog/${b.id}/`} className={`reveal ${D[i] ?? ''} group flex items-baseline gap-3.5 border-b border-line py-[15px] transition-[padding] duration-100 ease-out hover:pl-2.5`}>
                 <span className={b.type?.[0] === '日報' ? 'tag tag-diary' : 'tag'}>{b.type?.[0] ?? '記事'}</span>
                 <span className="flex-1 text-[15px] transition group-hover:text-accentink">{b.title}</span>
                 <span className="font-mono text-[12px] tabular-nums text-muted">{fmtDate(b.originalPublishedAt)}</span>
