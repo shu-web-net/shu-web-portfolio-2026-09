@@ -1,0 +1,50 @@
+name: Build & Deploy to Xserver
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # Actionsタブから手動実行
+  repository_dispatch: # microCMS Webhook から起動（工程⑤後半で連携）
+    types: [microcms-publish]
+
+# デプロイの多重起動を防ぐ（新しいpushが来たら古いジョブはキャンセル）
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # microCMSから記事・実績を取得して静的書き出し（out/ を生成）
+      - name: Build (static export)
+        run: npm run build
+        env:
+          MICROCMS_SERVICE_DOMAIN: ${{ secrets.MICROCMS_SERVICE_DOMAIN }}
+          MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
+
+      # .htaccess を out/ 直下へ配置（Xserverルートに一緒にアップされる）
+      - name: Place .htaccess into out/
+        run: cp deploy/.htaccess out/.htaccess
+
+      # FTPSでXserverへアップロード。
+      # dangerous-clean-slate は使わない → サーバ既存の wp-content/uploads・
+      # サブディレクトリサイトを消さない（差分アップのみ）。
+      - name: Deploy to Xserver (FTPS)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./out/
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}

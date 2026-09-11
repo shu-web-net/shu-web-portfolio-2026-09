@@ -1,0 +1,35 @@
+# ==========================================================================
+# shu-web.jp  静的サイト(Next.js export)配信用 .htaccess
+# 親WordPressを削除せず、index.html を index.php より優先させて静的サイトへ切替。
+# 問題が出たら、この .htaccess を旧WP版に戻すだけでWordPressに即復帰できる。
+# ==========================================================================
+
+# index.html を index.php より優先 → ルートが新しい静的サイトになる
+DirectoryIndex index.html index.php
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # 実在するファイル・ディレクトリはそのまま配信し、横取りしない。
+  #   /wp-content/uploads/     … 記事本文の画像（約220記事・恒久的に残す）
+  #   /uematsu-recruit/        … 独立した静的LP
+  #   /jitsuanken-challenge/   … 親とは別のWordPressインストール
+  #   /portfolio-cafe/ 等       … Basic認証付きサブディレクトリ
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+</IfModule>
+
+# 静的エクスポートの404ページ
+ErrorDocument 404 /404.html
+
+<IfModule mod_headers.c>
+  # HTMLは常に最新を取得（更新が即反映されるように）
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  # ハッシュ付き静的アセット（内容が変わればファイル名も変わる）は長期キャッシュ
+  <FilesMatch "\.(js|css|woff2?|svg|webp|avif|png|jpe?g|gif|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
