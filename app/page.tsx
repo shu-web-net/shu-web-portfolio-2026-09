@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { getProfile, getWorks, getBlogs } from '@/lib/microcms';
 import WorkCard from '@/components/WorkCard';
 
@@ -51,11 +52,11 @@ export default async function Home() {
           コードも、空気も、<em className="not-italic text-accentink">ととのえる</em>。
         </h1>
         <p className="reveal d2 mt-[22px] max-w-[40em] text-[17px] leading-[1.9] text-muted">
-          20年のCS経験を土台に、顧客と開発チームの間で認識をそろえ、手戻りのない進行に貢献する Webコーダーです。実装は Next.js / TypeScript / WordPress。
+          20年のCS経験を土台に、顧客と開発チームの間で認識をそろえ、手戻りのない進行に貢献する Webコーダーです。実装は Next.js / TypeScript / microCMS / WordPress。
         </p>
         <div className="reveal d3 mt-[26px]">
           <span className="inline-flex items-center gap-2 rounded-full border border-line px-3 py-[5px] font-mono text-[12px] text-muted">
-            <span className="h-2 w-2 rounded-full bg-accent" />長期・継続でチームに参画できる業務委託を探しています（フルリモート）
+            <span className="h-2 w-2 rounded-full bg-accent" />長期・継続でチームに参画できる業務委託を探しています（可能であればフルリモートを希望）
           </span>
         </div>
         <div className="reveal d4 mt-8 flex flex-wrap gap-3">
@@ -125,7 +126,7 @@ export default async function Home() {
           <BlkHead title="latest posts" href="/blog/" />
           <div className="flex flex-col">
             {blogs.contents.map((b, i) => (
-              <a key={b.id} href={`/blog/${b.id}/`} className={`reveal ${D[i] ?? ''} group flex items-baseline gap-3.5 border-b border-line py-[15px] transition-[padding] hover:pl-2.5`}>
+              <a key={b.id} href={`/blog/${b.id}/`} className={`reveal ${D[i] ?? ''} group flex items-baseline gap-3.5 border-b border-line py-[15px] transition-[padding] duration-200 ease-out hover:pl-2.5`}>
                 <span className={b.type?.[0] === '日報' ? 'tag tag-diary' : 'tag'}>{b.type?.[0] ?? '記事'}</span>
                 <span className="flex-1 text-[15px] transition group-hover:text-accentink">{b.title}</span>
                 <span className="font-mono text-[12px] tabular-nums text-muted">{fmtDate(b.originalPublishedAt)}</span>
@@ -143,9 +144,16 @@ export default async function Home() {
           <img className="h-[120px] w-[120px] rounded-full border border-line object-cover" src={avatar} alt="しゅうのプロフィール画像" />
           <div className="bio" dangerouslySetInnerHTML={{ __html: profile.introduction ?? '' }} />
           <div className="overflow-hidden rounded-xl border border-line bg-surface font-mono text-[13px]">
-            {[['稼働', '週30〜50h'], ['形態', 'フルリモート'], ['連絡', 'Slack / Chatwork / Zoom'], ['レスポンス', '遅くとも3時間以内'], ['拠点', '兵庫県明石市']].map(([k, v]) => (
+            {([
+              ['稼働', '週30〜50h'],
+              ['形態', 'フルリモート希望'],
+              // チャット系/会議系をそれぞれ改行しない塊にし、境界のスペースだけで折り返す
+              ['連絡', <><span className="whitespace-nowrap">Slack / Chatwork / Discord /</span> <span className="whitespace-nowrap">Zoom / Meet 等</span></>],
+              ['レスポンス', '遅くとも3時間以内'],
+              ['拠点', '兵庫県明石市'],
+            ] as [string, ReactNode][]).map(([k, v]) => (
               <div key={k} className="flex justify-between gap-3 border-b border-line px-4 py-3 last:border-b-0">
-                <span className="text-muted">{k}</span><span className="text-right">{v}</span>
+                <span className="shrink-0 whitespace-nowrap text-muted">{k}</span><span className="text-right">{v}</span>
               </div>
             ))}
           </div>

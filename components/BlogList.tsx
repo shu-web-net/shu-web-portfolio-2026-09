@@ -9,7 +9,7 @@ export default function BlogList({ posts }: { posts: Blog[] }) {
         <a
           key={b.id}
           href={`/blog/${b.id}/`}
-          className="group flex items-baseline gap-3.5 border-b border-line py-[15px] transition-[padding] hover:pl-2.5"
+          className="group flex items-baseline gap-3.5 border-b border-line py-[15px] transition-[padding] duration-200 ease-out hover:pl-2.5"
         >
           <span className={b.type?.[0] === '日報' ? 'tag tag-diary' : 'tag'}>{b.type?.[0] ?? '記事'}</span>
           <span className="flex-1 text-[15px] transition group-hover:text-accentink">{b.title}</span>
