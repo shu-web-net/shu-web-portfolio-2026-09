@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     title: SITE_NAME,
     description: SITE_DESC,
-    images: [{ url: '/og-image.png', width: 1280, height: 720, alt: SITE_NAME }],
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: SITE_NAME }],
   },
   twitter: {
     card: 'summary_large_image',
