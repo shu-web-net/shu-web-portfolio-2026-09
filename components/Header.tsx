@@ -8,6 +8,7 @@ const NAV = [
   ['/#skills', 'skills'],
   ['/blog/', 'blog'],
   ['/#profile', 'profile'],
+  ['/contact/', 'contact'],
 ];
 
 export default function Header() {
