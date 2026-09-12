@@ -39,7 +39,12 @@ jobs:
       # FTPSでXserverへアップロード。
       # dangerous-clean-slate は使わない → サーバ既存の wp-content/uploads・
       # サブディレクトリサイトを消さない（差分アップのみ）。
+      #
+      # XserverのFTP制御コネクションが時々応答遅延し "Timeout (control socket)" で
+      # 失敗することがあるため、timeoutを既定30秒から延長し、失敗時は間隔を置いて1回だけ自動リトライする。
       - name: Deploy to Xserver (FTPS)
+        id: ftp_deploy
+        continue-on-error: true
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -48,3 +53,25 @@ jobs:
           protocol: ftps
           local-dir: ./out/
           server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          timeout: 120000
+
+      - name: Wait before retry
+        if: steps.ftp_deploy.outcome == 'failure'
+        run: sleep 30
+
+      - name: Deploy to Xserver (FTPS) - retry
+        id: ftp_deploy_retry
+        if: steps.ftp_deploy.outcome == 'failure'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./out/
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          timeout: 120000
+
+      - name: Fail job if both attempts failed
+        if: steps.ftp_deploy.outcome == 'failure' && steps.ftp_deploy_retry.outcome == 'failure'
+        run: exit 1
