@@ -72,6 +72,6 @@ npm run dev
 
 `main` ブランチへの push、または microCMS のコンテンツ公開をトリガーに GitHub Actions が自動でビルド・デプロイします。詳細は [`docs/deploy-guide.md`](./docs/deploy-guide.md) を参照してください。
 
-## ライセンス
+## 本リポジトリについて
 
-[MIT](./LICENSE)
+学習・参考目的での閲覧はご自由にどうぞ。コードの転載・商用利用・再配布はご遠慮ください。
