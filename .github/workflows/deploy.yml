@@ -35,6 +35,7 @@ jobs:
           NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_NOTIFY: ${{ secrets.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_NOTIFY }}
           NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_AUTOREPLY: ${{ secrets.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_AUTOREPLY }}
           NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }}
+          NEXT_PUBLIC_GA_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_GA_MEASUREMENT_ID }}
 
       # .htaccess を out/ 直下へ配置（Xserverルートに一緒にアップされる）
       - name: Place .htaccess into out/
