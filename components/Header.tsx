@@ -23,7 +23,18 @@ export default function Header() {
             <a key={href} href={href} className="transition hover:text-accentink">{label}</a>
           ))}
         </nav>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <a
+            href="https://x.com/shu_web_net"
+            target="_blank"
+            rel="noopener"
+            aria-label="X (Twitter)"
+            className="text-muted transition hover:text-accentink"
+          >
+            <svg viewBox="0 0 16 16" width="15" height="15" fill="currentColor" aria-hidden="true">
+              <path d="M9.53 6.78 15.17.5h-1.34l-4.9 5.45L5.02.5H.5l5.92 8.4L.5 15.5h1.34l5.18-5.76 4.14 5.76h4.52L9.53 6.78Zm-1.83 2.04-.6-.83L2.33 1.44h2.06l3.85 5.36.6.83 5 6.97H11.8L7.7 8.82Z" />
+            </svg>
+          </a>
           <ThemeToggle />
           <MobileNav />
         </div>
