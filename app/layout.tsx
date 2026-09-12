@@ -4,9 +4,32 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import RevealInit from '@/components/RevealInit';
 
+const SITE_NAME = 'しゅう | Webコーダー ポートフォリオ';
+const SITE_DESC =
+  'CS20年 × Webコーディング × AI活用。実装と進行でチームに長く伴走するWebコーダー「しゅう」のポートフォリオ。';
+
 export const metadata: Metadata = {
-  title: 'しゅう | Webコーダー ポートフォリオ',
-  description: 'CS20年 × Webコーディング × AI活用。実装と進行でチームに長く伴走するWebコーダー「しゅう」のポートフォリオ。',
+  // 相対パスのOG画像などを絶対URLに解決するための基準
+  metadataBase: new URL('https://shu-web.jp'),
+  title: SITE_NAME,
+  description: SITE_DESC,
+  openGraph: {
+    type: 'website',
+    locale: 'ja_JP',
+    url: '/',
+    siteName: SITE_NAME,
+    title: SITE_NAME,
+    description: SITE_DESC,
+    images: [{ url: '/og-image.png', width: 1280, height: 720, alt: SITE_NAME }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: SITE_NAME,
+    description: SITE_DESC,
+    site: '@shu_web_net',
+    creator: '@shu_web_net',
+    images: ['/og-image.png'],
+  },
 };
 
 // 初期表示のちらつき防止：描画前に data-theme を確定させる

@@ -10,11 +10,19 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const post = await getBlogDetail(params.slug, { fields: 'title,description' }).catch(() => null);
+  const post = await getBlogDetail(params.slug, {
+    fields: 'title,description,eyecatch,eyecatchUrl',
+  }).catch(() => null);
   if (!post) return {};
+  const title = `${post.title} | しゅう | Webコーダー ポートフォリオ`;
+  const description = post.description || undefined;
+  // 記事にアイキャッチがあればそれを、無ければサイト共通のOG画像を使う
+  const images = [blogThumbnail(post) ?? '/og-image.png'];
   return {
-    title: `${post.title} | しゅう | Webコーダー ポートフォリオ`,
-    description: post.description || undefined,
+    title,
+    description,
+    openGraph: { type: 'article', url: `/blog/${params.slug}/`, title, description, images },
+    twitter: { card: 'summary_large_image', title, description, images },
   };
 }
 
