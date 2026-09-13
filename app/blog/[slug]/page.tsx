@@ -52,7 +52,7 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
 
         {thumb && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={thumb} alt="" className="mt-8 w-full rounded-xl border border-line" />
+          <img src={thumb} alt={post.title} className="mt-8 w-full rounded-xl border border-line" />
         )}
 
         <div

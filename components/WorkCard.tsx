@@ -25,11 +25,15 @@ export default function WorkCard({ work, className = '' }: { work: Work; classNa
 
   const Tag = work.url ? 'a' : 'div';
   const linkProps = work.url ? { href: work.url, target: '_blank', rel: 'noopener' } : {};
-  const thumbStyle = work.thumbnail?.url ? { backgroundImage: `url(${work.thumbnail.url})` } : undefined;
 
   return (
     <Tag className={`card ${className}`} {...linkProps}>
-      <div className="thumb" style={thumbStyle} />
+      {work.thumbnail?.url ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={work.thumbnail.url} alt={work.title} className="thumb object-cover" />
+      ) : (
+        <div className="thumb" />
+      )}
       <h3 className="mb-2 text-[16.5px] font-bold">{work.title}</h3>
       <p className="text-[13.5px] leading-[1.72] text-muted">{work.overview}</p>
       {Chips}
