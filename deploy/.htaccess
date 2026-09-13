@@ -12,9 +12,9 @@ DirectoryIndex index.html index.php
 
   # 実在するファイル・ディレクトリはそのまま配信し、横取りしない。
   #   /wp-content/uploads/     … 記事本文の画像（約220記事・恒久的に残す）
-  #   /uematsu-recruit/        … 独立した静的LP
-  #   /jitsuanken-challenge/   … 親とは別のWordPressインストール
-  #   /portfolio-cafe/ 等       … Basic認証付きサブディレクトリ
+  #   採用LP等の独立した静的LPサブディレクトリ
+  #   親とは別のWordPressインストールのサブディレクトリ
+  #   Basic認証付きサブディレクトリ等
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]

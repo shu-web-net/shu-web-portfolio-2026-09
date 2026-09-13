@@ -34,7 +34,12 @@ export default function EmbedScripts() {
         // 変換完了後に元のフォールバックblockquoteを手動で隠す。
         window.twttr?.widgets?.load().then(() => {
           document.querySelectorAll('blockquote.twitter-tweet').forEach((bq) => {
-            (bq as HTMLElement).style.display = 'none';
+            // widgets.jsはカード化に成功すると、元のblockquoteの直後にiframeラッパーを
+            // 追加する。削除済み/非公開ツイート等で変換に失敗した場合はiframeが増えないため、
+            // それを目印に「成功したものだけ」隠す（失敗時は引用テキストのフォールバックを残す）。
+            if (bq.nextElementSibling?.tagName === 'IFRAME') {
+              (bq as HTMLElement).style.display = 'none';
+            }
           });
         });
       });

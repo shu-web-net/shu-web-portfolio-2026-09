@@ -44,6 +44,7 @@ export type Work = {
   techStack?: string[];
   url?: string;
   order?: number;
+  isNda?: boolean; // NDA（守秘）案件は非公開カード表示にする
 } & MicroCMSListContent;
 
 export type SkillItem = {

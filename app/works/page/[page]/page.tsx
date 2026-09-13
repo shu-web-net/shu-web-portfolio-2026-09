@@ -1,12 +1,10 @@
 import type { Metadata } from 'next';
 import WorkCard from '@/components/WorkCard';
 import Pagination from '@/components/Pagination';
-import { getWorksPageData, WORKS_PAGE_SIZE } from '../../shared';
-import { getWorks } from '@/lib/microcms';
+import { getWorksPageData } from '../../shared';
 
 export async function generateStaticParams() {
-  const all = await getWorks({ orders: 'order', limit: 100, fields: 'id' });
-  const totalPages = Math.max(1, Math.ceil(all.contents.length / WORKS_PAGE_SIZE));
+  const { totalPages } = await getWorksPageData(1);
   // 1ページ目は /works/ が担当するので、2ページ目以降だけ生成する
   return Array.from({ length: Math.max(0, totalPages - 1) }, (_, i) => ({ page: String(i + 2) }));
 }

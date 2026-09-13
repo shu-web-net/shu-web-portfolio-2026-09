@@ -1,10 +1,7 @@
 import type { Work } from '@/lib/microcms';
 
-// NDA（守秘）で非公開カード表示にする works の contentId。
-export const NDA_IDS = ['nursery-group-site', 'telecom-lpo'];
-
 export default function WorkCard({ work, className = '' }: { work: Work; className?: string }) {
-  const isNda = NDA_IDS.includes(work.id);
+  const isNda = work.isNda ?? false;
   const chips = work.techStack ?? [];
   const Chips = chips.length > 0 && (
     <div className="mt-3.5 flex flex-wrap gap-1.5">
@@ -30,7 +27,7 @@ export default function WorkCard({ work, className = '' }: { work: Work; classNa
     <Tag className={`card ${className}`} {...linkProps}>
       {work.thumbnail?.url ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={work.thumbnail.url} alt={work.title} className="thumb object-cover" />
+        <img src={work.thumbnail.url} alt={work.title} className="thumb w-full object-cover" />
       ) : (
         <div className="thumb" />
       )}

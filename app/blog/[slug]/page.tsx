@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import { getBlogDetail, blogThumbnail } from '@/lib/microcms';
 import { transformEmbeds } from '@/lib/embeds';
 import { getAllBlogIds } from '../shared';
@@ -29,7 +30,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 const fmtDate = (s?: string) => (s ? s.slice(0, 10).replace(/-/g, '.') : '');
 
 export default async function BlogDetailPage({ params }: { params: { slug: string } }) {
-  const post = await getBlogDetail(params.slug);
+  // generateMetadataと同様、この記事だけの取得失敗がビルド全体を止めないようにする
+  // （microCMSのレート制限でSDKのretryを使い切った場合等）。
+  const post = await getBlogDetail(params.slug).catch(() => null);
+  if (!post) notFound();
   const thumb = blogThumbnail(post);
   const typeLabel = post.type?.[0] ?? '記事';
   const contentHtml = transformEmbeds(post.content);

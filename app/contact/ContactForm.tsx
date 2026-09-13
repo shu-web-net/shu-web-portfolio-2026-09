@@ -25,13 +25,21 @@ export default function ContactForm() {
     };
 
     try {
-      // 通知（自分宛）と自動返信（問い合わせした人宛）を両方送る
+      // 通知（自分宛）を送る。ここが失敗した場合のみ「未送信」としてユーザーに再送信してもらう。
       await emailjs.send(SERVICE_ID, TEMPLATE_ID_NOTIFY, params, { publicKey: PUBLIC_KEY });
-      await emailjs.send(SERVICE_ID, TEMPLATE_ID_AUTOREPLY, params, { publicKey: PUBLIC_KEY });
-      setStatus('sent');
-      form.reset();
     } catch {
       setStatus('error');
+      return;
+    }
+
+    // 通知は届いているので、以降は成功として扱う。自動返信（問い合わせした人宛）が
+    // 失敗しても、ユーザーに再送信させて通知メールを重複させないようにする。
+    setStatus('sent');
+    form.reset();
+    try {
+      await emailjs.send(SERVICE_ID, TEMPLATE_ID_AUTOREPLY, params, { publicKey: PUBLIC_KEY });
+    } catch (err) {
+      console.error('自動返信メールの送信に失敗しました', err);
     }
   };
 

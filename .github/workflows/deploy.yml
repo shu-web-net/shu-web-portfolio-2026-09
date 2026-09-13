@@ -51,8 +51,20 @@ jobs:
 
       # SSH+rsyncでXserverへアップロード。
       # --delete は使わない → サーバ既存の wp-content/uploads・サブディレクトリサイトを消さない（差分アップのみ）。
-      # 差分転送のため、FTPSより高速かつXserverのFTP制御コネクション遅延の影響を受けない。
+      # 差分転送のため、FTPSより高速かつXserverのFTP制御コネクション遅延の影響を受けにくいが、
+      # SSH接続も一時的な瞬断は起こり得るため、FTPS時代と同様に1回だけ自動リトライする。
       - name: Deploy to Xserver (SSH/rsync)
         run: |
-          rsync -avz --checksum -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.XSERVER_SSH_PORT }} -o StrictHostKeyChecking=yes" \
-            ./out/ ${{ secrets.XSERVER_SSH_USER }}@${{ secrets.XSERVER_SSH_HOST }}:${{ secrets.XSERVER_SSH_REMOTE_DIR }}
+          attempt=1
+          max_attempts=2
+          until timeout 300 rsync -avz --checksum \
+              -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.XSERVER_SSH_PORT }} -o StrictHostKeyChecking=yes -o ConnectTimeout=30" \
+              ./out/ ${{ secrets.XSERVER_SSH_USER }}@${{ secrets.XSERVER_SSH_HOST }}:${{ secrets.XSERVER_SSH_REMOTE_DIR }}; do
+            if [ "$attempt" -ge "$max_attempts" ]; then
+              echo "rsync failed after $attempt attempts."
+              exit 1
+            fi
+            echo "rsync failed (attempt $attempt/$max_attempts). Retrying in 30s..."
+            attempt=$((attempt + 1))
+            sleep 30
+          done

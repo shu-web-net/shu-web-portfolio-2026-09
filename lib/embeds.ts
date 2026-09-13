@@ -1,8 +1,15 @@
 import * as cheerio from 'cheerio';
 
-const TWEET_STATUS_RE = /(?:twitter|x)\.com\/[^/\s"]+\/status\/(\d+)/i;
+// ドメイン直前を「文字列先頭」「プロトコル区切りの//」「www.」のいずれかに限定し、
+// "flex.com"のような無関係ドメインの部分文字列 "x.com" に誤マッチしないようにする。
+const TWEET_STATUS_RE = /(?:^|\/\/|www\.)(?:twitter|x)\.com\/[^/\s"]+\/status\/(\d+)/i;
 const YOUTUBE_RE = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{6,})/i;
 const INSTAGRAM_RE = /instagram\.com\/(?:p|reel)\/([A-Za-z0-9_-]+)/i;
+
+// 属性値として埋め込む前にHTML特殊文字をエスケープする（dangerouslySetInnerHTMLで
+// 描画されるため、URLテキストに紛れ込んだ引用符等での属性抜けを防ぐ）。
+const escapeHtmlAttr = (s: string) =>
+  s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 // 本文HTMLを解析し、X(Twitter)/YouTube/Instagramの埋め込みを検出して変換する。
 // - 移行済み記事のツイート引用(blockquote)は class="twitter-tweet" を付け直すだけでよい
@@ -38,16 +45,18 @@ export function transformEmbeds(html: string): string {
 
     const tweetMatch = url.match(TWEET_STATUS_RE);
     if (tweetMatch) {
+      const safeUrl = escapeHtmlAttr(url);
       $p.replaceWith(
-        `<blockquote class="twitter-tweet" data-dnt="true"><p><a href="${url}"></a></p></blockquote>`
+        `<blockquote class="twitter-tweet" data-dnt="true"><p><a href="${safeUrl}"></a></p></blockquote>`
       );
       return;
     }
 
     const igMatch = url.match(INSTAGRAM_RE);
     if (igMatch) {
+      const safeUrl = escapeHtmlAttr(url);
       $p.replaceWith(
-        `<blockquote class="instagram-media" data-instgrm-permalink="${url}" data-instgrm-version="14"><a href="${url}" target="_blank" rel="noopener">Instagramで見る</a></blockquote>`
+        `<blockquote class="instagram-media" data-instgrm-permalink="${safeUrl}" data-instgrm-version="14"><a href="${safeUrl}" target="_blank" rel="noopener">Instagramで見る</a></blockquote>`
       );
       return;
     }
