@@ -14,7 +14,7 @@ WordPress で運用していたサイトを、Next.js + microCMS + Xserver 静�
 | スタイリング | [Tailwind CSS](https://tailwindcss.com/) | CSS変数をトークンの真実の値とし、Tailwind設定で参照する構成。レイアウトはユーティリティ直書き、再利用コンポーネントは `@layer components` |
 | CMS | [microCMS](https://microcms.io/) | ヘッドレスCMS。個人開発・Hobbyプランが商用利用可能な点も選定理由 |
 | ホスティング | Xserver（静的配信のみ） | 既契約サーバーを追加費用なしで活用。Node.js等は動かさず、静的ファイルの配信のみ担わせる |
-| CI/CD | GitHub Actions | push または microCMS の Webhook をトリガーに、ビルドから Xserver への FTPS デプロイまで自動化 |
+| CI/CD | GitHub Actions | push または microCMS の Webhook をトリガーに、ビルドから Xserver への SSH+rsync デプロイまで自動化 |
 | フォーム | [EmailJS](https://www.emailjs.com/) | 静的サイトにサーバー機能を持たせずに、お問い合わせフォームの送信・自動返信を実現するため |
 
 ## 全体構成
@@ -26,7 +26,7 @@ microCMS（記事・実績・プロフィールを入稿）
 GitHub Actions（ビルド）
    │ npm run build（output: 'export' で静的書き出し）
    ▼
-Xserver（FTPSで out/ をアップロード）
+Xserver（SSH+rsyncで out/ をアップロード）
    → shu-web.jp で静的サイトとして配信
 ```
 
