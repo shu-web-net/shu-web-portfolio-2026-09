@@ -56,7 +56,7 @@ export default async function Home() {
         </p>
         <div className="reveal d3 mt-[26px]">
           <span className="inline-flex items-center gap-2 rounded-full border border-line px-3 py-[5px] font-mono text-[12px] text-muted">
-            <span className="h-2 w-2 rounded-full bg-accent" />長期・継続でチームに参画できる業務委託を探しています（可能であればフルリモートを希望）
+            <span className="h-2 w-2 rounded-full bg-accent" />正社員・業務委託のどちらも検討中。フルリモートも、大阪・神戸エリアへの出社も対応できます。
           </span>
         </div>
         <div className="reveal d4 mt-8 flex flex-wrap gap-3">
@@ -145,12 +145,13 @@ export default async function Home() {
           <div className="bio" dangerouslySetInnerHTML={{ __html: profile.introduction ?? '' }} />
           <div className="overflow-hidden rounded-xl border border-line bg-surface font-mono text-[13px]">
             {([
-              ['稼働', '週30〜50h'],
-              ['形態', 'フルリモート希望'],
+              ['稼働', '週30〜50h（業務委託の場合）'],
+              ['形態', '正社員・業務委託どちらも可'],
+              ['勤務地', 'フルリモート / 大阪・神戸へ出社可'],
               // チャット系/会議系をそれぞれ改行しない塊にし、境界のスペースだけで折り返す
               ['連絡', <><span className="whitespace-nowrap">Slack / Chatwork / Discord /</span> <span className="whitespace-nowrap">Zoom / Meet 等</span></>],
               ['レスポンス', '遅くとも3時間以内'],
-              ['拠点', '兵庫県明石市'],
+              ['拠点', '兵庫県明石市（転居不可）'],
             ] as [string, ReactNode][]).map(([k, v]) => (
               <div key={k} className="flex justify-between gap-3 border-b border-line px-4 py-3 last:border-b-0">
                 <span className="shrink-0 whitespace-nowrap text-muted">{k}</span><span className="text-right">{v}</span>
